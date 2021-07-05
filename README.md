@@ -6,5 +6,6 @@ Vì đặc thù của team mình là Application Security, trong đó tập trun
 	
 2. Thực hành hackthebox: bạn nào chưa có thì reg (nhớ không nhầm reg cũng là một challenge). Làm tối thiểu 3 máy trên htb, trong đó có 1 máy medium. Writeup lại bài em làm được.
 
-**Thời gian hoàn thành: Trước 23h ngày 14/7/2021.**
-**Phương pháp báo cáo: Báo cáo viết bằng markdown. Các bạn tạo repo trên github: SAS_AppSec_Intern rồi đẩy kết quả lên đó. Gửi lại link báo cáo cho mình namhb@fsoft.com.vn. Mình ko nhận doc/docx nhé.**
+**Thời gian hoàn thành:** Trước 23h ngày 14/7/2021.
+
+**Phương pháp báo cáo:** Báo cáo viết bằng markdown. Các bạn tạo repo trên github: SAS_AppSec_Intern rồi đẩy kết quả lên đó. Gửi lại link báo cáo cho mình namhb@fsoft.com.vn. Mình ko nhận doc/docx nhé.
