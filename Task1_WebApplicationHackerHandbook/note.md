@@ -48,13 +48,47 @@ Có thể quản lý quyền truy cập của người dùng thông qua bộ ba 
 
 #### 1.3. Access Control
 
+> An application might support numerous user roles, each involving different combinations of specific privileges. Individual users may be permitted to access a subset of the total data held within the application. Specific functions may implement transaction limits and other checks, all of which need to be properly enforced based on the user’s identity
+
 ### 2. Handling user input
 
+#### 2.1. Varieties of Input
+
+#### 2.2. Approaches to Input Handling
+
+> "Reject Known Bad"
+
+> "Accept Known Good"
+
+> Santitization
+
+> Safe Data Handling
+
+> Semantic Checks
+
+#### 2.3. Boundary Validation
+
+#### 2.4. Multistep Validation and Canonicalization
+
 ### 3. Handling Attackers
+
+#### 3.1. Handling errors
+
+#### 3.2. Maintaining audit logs
+
+#### 3.3. Alerting Administrators
+
+#### 3.4. Reacting to attacks
 
 ### 4. Managing the Application
 
 ## Chapter 3: Web Application Technologies
+
+### 1. The HTTP Protocol
+
+### 2. Web Functionality
+
+### 3. Encoding Schemes
 
 ## Chapter 4: Mapping the Application
 
