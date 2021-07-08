@@ -24,7 +24,9 @@ Các Web App đã phát triển từ "kho lưu trữ thông tin tĩnh" thành c�
 
 Các cơ chế phòng thủ của Web App kết hợp các yếu tố cốt lỗi sau:
 
-**Handling user access**: Xử lý quyền truy cập của người dùng tới dữ liệu và các chức năng của ứng dụng để đề phòng họ có được quyền truy cập trái phép.
+### Handling user access
+
+Xử lý quyền truy cập của người dùng tới dữ liệu và các chức năng của ứng dụng để đề phòng họ có được quyền truy cập trái phép.
 
 - Authenticaion: Cơ chế xác thực người dùng.
 
@@ -32,7 +34,9 @@ Các cơ chế phòng thủ của Web App kết hợp các yếu tố cốt lỗ
 
 - Access Control: Quản lý quyền truy cập.
 
-**Handling user input**: Xử lý đầu vào của người dùng đến các chức năng của Web App để ngăn đầu vào không đúng định dạng gây ra hành vi không mong muốn.
+### Handling user input
+
+Xử lý đầu vào của người dùng đến các chức năng của Web App để ngăn đầu vào không đúng định dạng gây ra hành vi không mong muốn.
 
 - Varieties of Input
 
@@ -52,7 +56,9 @@ Các cơ chế phòng thủ của Web App kết hợp các yếu tố cốt lỗ
 
 - Multistep Validation and Canonicalization: Canonicalization là quá trình convert kí tự thành kí tự thông thường.  
 
-**Handling Attackers**: Xử lý khi bị tấn công, ứng dụng sẽ đưa ra những biện pháp phòng thủ và tấn công để ngăn cản hacker.
+### Handling Attackers**
+
+Xử lý khi bị tấn công, ứng dụng sẽ đưa ra những biện pháp phòng thủ và tấn công để ngăn cản hacker.
 
 - Handling errors: Xử lý các unexpected errors cẩn thận và in ra thông báo lỗi phù hợp tới người dùng, không được trả về thông điệp hệ thống hoặc thông tin debug.
 
@@ -62,7 +68,9 @@ Các cơ chế phòng thủ của Web App kết hợp các yếu tố cốt lỗ
 
 - Reacting to attacks
 
-**Managing the Application**: Quản lý ứng dụng bằng cách cho phép quản trị viên giám sát hoạt động của nó.
+### Managing the Application
+
+Quản lý ứng dụng bằng cách cho phép quản trị viên giám sát hoạt động của nó.
 
 ## Chapter 3: Web Application Technologies
 
@@ -136,6 +144,7 @@ Discovering Hidden Parameters
 - Sử dụng danh sách các tham số debug (debug, test, hid, source, ...) và các giá trị (true, yes, on, 1, ...)
 
 ### Analyzing the Application
+
 
 
 ## Chapter 5: Bypassing Client-Side Controls
