@@ -20,6 +20,7 @@ Web Application Hacker's Handbook Task checklist as a Github-Flavored Markdown f
 - [ ] Map the attack surface
 
 ### Test handling of access
+
 - [ ] Authentication
 - [ ] Test password quality rules
 - [ ] Test for username enumeration
@@ -101,4 +102,5 @@ Web Application Hacker's Handbook Task checklist as a Github-Flavored Markdown f
 - [ ] Check for weak SSL ciphers
 
 ## References
+
 *  http://mdsec.net/wahh/tasks.html
