@@ -147,7 +147,7 @@ Chúng ta sẽ xem thử file `bindmgr.sh`:
         exit 43
     fi
 
-Đoạn script này sẽ kiểM tra .version đã tồn tại hay chưam nếu file chưa tồn tại thì chương trình sẽ thoát
+Đoạn script này sẽ kiểm tra .version đã tồn tại hay chưam nếu file chưa tồn tại thì chương trình sẽ thoát
 
     # Create config file that includes all files from named.bindmgr.
     echo "[+] Creating $BINDMGR_CONF file."
