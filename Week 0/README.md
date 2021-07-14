@@ -1,4 +1,4 @@
-# SAS_AppSec_Intern
+# WEEK 0
 
 Vì đặc thù của team mình là Application Security, trong đó tập trung vào các kỹ năng tấn công: Penetration testing, Exploitation. Trong tuần này các bạn thực hiện các task sau: 
 
