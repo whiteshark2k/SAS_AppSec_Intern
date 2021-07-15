@@ -270,3 +270,197 @@ Khai thác lỗ hổng XSS:
 **Chương 17 và Chương 18** giới thiệu các kĩ thuật tấn công vào cấu trúc ứng dụng và server
 
 **Chương 19: Finding Vulnerabilities in Source Code** hướng dẫn cách phát hiện các lỗ hổng phổ biến trong source code ứng dụng.
+
+**Chương 21: A Web Application Hacker's Methodology** 
+
+![](DRAFT\0.jpg)
+
+1. Map the Application's Content
+
+   ![](DRAFT/1.jpg)
+
+   - Explore Visible Content
+     - Config trình duyệt sử dụng proxy/spidering tool như Burp hay WebScarab
+     - Config trình duyệt sử dụng extension như IEWatch để theo dõi và phân tích HTTP, HTML content mà trình duyệt xử lý
+     - Duyệt toàn bộ ứng dụng web thủ công, truy cập toàn bộ link và URL, submit toàn bộ form, ... Thử duyệt với JavaScript/Cookie bật/tắt
+     - Nếu ứng dụng yêu cầu xác thực thì sử dụng credential đã tạo để có thể truy cập các chức năng/tài nguyên được bảo vệ
+     - Giám sát các requests và responses qua proxy để hiểu rõ hơn về kiểu dữ liệu được submit và cách client dùng chúng
+     - Kiểm tra site map được tạo bởi spidering để xác định xem nội dung hay chức năng nào mà người dùng chưa duyệt qua nhưng vẫn xuất hiện trong site map. Nếu có thì truy cập nội dung/chức năng đó bằng trình duyệt để spider có thể xác định thêm được các nội dung mở rộng.
+     - Sau khi đã duyệt thủ công và sử dụng spider xong thì người dùng có thể sử dụng spider để crawl ứng dụng web, sử dụng set of discovered URL. Điều này đôi khi có thể phát hiện ra các nội dung mà người dùng bỏ qua trong lúc duyệt thủ công. Trước khi sử dụng spider để crawl thì người dùng cần xác định các URL có thể gây hại cho web app và exclude chúng
+   - Consult Public Resources
+     - Sử dụng các công cụ tìm kiếm và lưu trữ (Wayback Machine) để xác định các nội dung mà đã lập chỉ mục
+     - Sử dụng các tùy chọn tìm kiếm nâng cao để cải thiện hiệu quả, ví dụ `site:` hay `link` trong Google
+     - Tìm kiếm cả các thông tin liên quan đến tên, email mà người dùng thu thập được từ ứng dụng web, cả những nội dung ẩn như HTML comment, ... Tìm kiếm các thông tin liên quan đến ứng dụng web trên các diễn đàn, ...
+     - Kiểm tra các file WSDL để xây dựng danh sách tên hàm và tham số mà ứng dụng sử dụng
+   - Discover Hidden Content
+     - Tìm hiểu cách ứng dụng xử lý các yêu cầu đối với các nội dung không tồn tại. Thực hiện một số request thủ công với nội dung không tồn tại và tồn tại đồng thời so sánh phản hồi của máy chủ để xác định khi nào một nội dung không tồn tại
+     - Xây dựng danh sách các file, thư mục và phần mở rộng file phổ biến. Thêm vào danh sách này các mục tương ứng thu thập được từ ứng dụng web. Thử tìm hiểu cách đặt tên của devs. Ví dụ nếu web app có trang `AddDocument.jsp` và `ViewDocument.jsp` thì nhiều khả năng sẽ có trang `EditDocument.jsp` và `RemoveDocument.jsp`
+     - Kiểm tra toàn bộ code client-side để xác định xem có nội dung nào ẩn phía server-side hay không, bao gồm HTML comments và các thuộc tính bị disabled
+     - Sử dụng các kĩ thuật rà quét tự động
+     - Thực hiện các kĩ thuật rà quét này đệ quy
+   - Discover Default Content
+     - Sử dụng nikto
+     - Xác minh thủ công các kết quả nghi ngờ
+     - Gửi yêu cầu tới thư mục root của server để lấy thông tin về IP trong `host` header và `User-Agent`
+   - Enumerate Identifier-Specified Functions
+     - Xác định các trường hợp mà tên hàm được pass vào request parameter, ví dụ `/admin.jsp?action=editUser` hay `/main.php?func=A21`
+     - Xây dựng site map dựa trên các chức năng, logical paths và dependencies giữa chúng
+   - Test for Debug Parameters
+     - `debug=true`
+     - `debug`, `test`, `hide`, `source` / `true`, `yes`, `on`, `1`
+
+2. Analyze the Application
+
+   ![](DRAFT/2.jpg)
+
+   - Identify Functionality
+     - Xác định chức năng chính của web app và công việc mà mỗi chức năng thực hiện
+     - Xác định cơ chế bảo mật chính mà ứng dụng sử dụng. Cụ thể là xác định cơ chế thực hiện authentication, session management và access control
+     - Xác định các chức năng và hành vi ngoại vi, ví dụ như redirect, off-site links, error message, chức năng quản trị và chức năng ghi log
+   - Identify Data Entry Points
+     - Xác định các đầu vào có thể
+     - Phân tích cơ chế vận chuyển và mã hóa dữ liệu
+     - Xác định các kênh out-of-band
+   - Identify the Technologies Used
+     - Xác định các công nghệ sử dụng trên client-side
+     - Xác định các công nghệ sử dụng trên server-side
+     - Kiểm tra HTTP `Server` header
+     - Sử dụng Httprint tool để fingerprint
+     - Xác định tên các srcipt hay câu lệnh query sử dụng Google `inurl`
+   - Map the Attack Surface
+     - Cố gắng xác định chắc chắn cấu trúc và chức năng phía server-side của ứng dụng và các cơ chế mà nó sử dụng. Ví dụ chức năng liệt kê các đơn hàng của khách hàng sẽ tương tác với CSDL, ...
+     - Với mỗi chức năng, xác định các dạng lỗ hổng phổ biến mà chúng có thể gặp phải,, Ví dụ chức năng upload file có thể chứa lỗ hổng Path Traversal, ...
+     - Lập kế hoạch tấn công, ưu tiên chức năng có khả năng tồn tại lỗ hổng nghiêm trọng nhất
+
+3. Test Client-Side Controls
+
+   ![](DRAFT/3.jpg)
+
+   - Test Transmission of Data Via the Client
+     - Xác định vị trí các hidden form, cookie hay các tham số trong URL dùng để transmit dữ liệu từ client lên server
+     - Xác định vai trò của 1 item trong logic của ứng dụng, dựa trên tên, giá trị và context mà chúng xuất hiện
+     - Sửa giá trị của item liên quan đến vai trò của nó trong ứng dụng. Xác định xem việc thay đổi này có ảnh hưởng đến quá trình hoạt động của ứng dụng không và có thể bị khai thác không
+     - Nếu dữ liệu truyền đi được làm nhiễu hoặc mã hóa thì có thể thử giải mã chúng theo nhiều cách, ví dụ như replay attack.
+     - Nếu ứng dụng sử dụng ASP.NET `ViewState`, kiểm tra xem nó có thể bị giả mạo hoặc chứa các thông tin nhạy cảm hay không.
+   - Test Client-Side Controls Over User Input
+     - Kiểm tra xem client-side có thể kiểm soát các giá trị dùng để kiểm duyệt nội dung submit hay không (ví dụ như giới hạn độ dài hay kiểm tra = JavaScript). Nếu có thì có thể bypass dễ dàng
+     - Lần lượt kiểm tra các trường input bằng cách gửi các nội dung bị block xem chúng có được gửi lên server hay không
+     - Xác định xem cơ chế kiểm duyệt nào được sử dụng. Xác nhận xem ứng dụng có phụ thuộc hoàn toàn vào cơ chế kiểm soát client-side để đảm bảo an toàn hay không. Đồng thời xác nhận xem có tồn tại bất kì điều kiện nào có thể khai thác mà kích hoạt bởi input hay không
+     - Kiểm tra toàn bộ HTML form để xác định các thuộc tính bị disabled, ví dụ `<input disabled=”true” name=”product”>`. Nếu tìm được thì thử submit chúng lên server để xem chúng có ảnh hưởng gì đến quá trình xử lý của server mà có thể lợi dụng để tấn công hay không.
+   - Test Browser Extension Components
+     - Understand the Client Application's Operation
+     - Decompile the Client
+     - Attach a Debugger
+     - Test ActiveX controls
+
+4. Test the Authentication Mechanism
+
+   ![](DRAFT/4.jpg)
+
+   - Understand the Mechanism
+     - Thiết lập các công nghệ xác thực đang được sử dụng
+     - Tìm tất các các chức năng liên quan đến xác thực (bao gồm đăng nhập, đăng kí, khôi phục tài khoản, ....)
+   - Test Password Quality
+     - Kiểm tra xem có quy tắc tối thiểu về mật khẩu hay không
+     - Đặt thử nhiều loại mật khẩu yếu khác nhau thông qua các chức năng khác nhau xem ứng dụng có chấp nhận hay không
+     - Thử submit credentials không hoàn chỉnh
+   - Test for Username Enumeration
+   - Test Resilience to Password Guessing
+   - Test Any Account Recovery Function
+   - Test Any Remember Me Function
+   - Test Any Impersonation Function
+   - Test Username Uniqueness
+   - Test Predictability of Autogenerated Credentials
+   - Check for Unsafe Transmission of Credentials
+   - Check for Unsafe Distribution of Credentials
+   - Test for Insecure Storage
+   - Test for Logic Flaws
+   - Exploit Any Vulnerabilities to Gain Unauthorized Access
+
+5. Test the Session Management Mechanism
+
+   ![](DRAFT/5.jpg)
+
+   - Understand the Mechanism
+   - Test Tokens for Meaning
+   - Test Tokens for Predictability
+   - Check for Insecure Transmission of Tokens
+   - Check for Disclosure of Tokens in Logs
+   - Check Mapping of Tokens to Sessions
+   - Test Session Termination
+   - Check for Session Fixation
+   - Check for CSRF
+   - Check Cookie Scope
+
+6. Test Access Controls
+
+   ![](DRAFT\6)
+
+   - Understand the Access Control Requirements
+   - Test with Multiple Accounts
+   - Test with Limited Access
+   - Test for Insecure Access Control Methods
+
+7. Test for Input-Based Vulnerabilities
+
+   ![](DRAFT/7.jpg)
+
+   - Fuzz All Request Parameters
+   - Test for SQL Injection
+   - Test for XSS and Other Response Injection
+   - Test for OS Command Injection
+   - Test for Path Traversal
+   - Test for Script Injection
+   - Test for File Inclusion
+
+8. Test for Function-Specific Input Vulnerabilities
+
+   ![](DRAFT/8.jpg)
+
+   - Test for SMTP Injection
+   - Test for Native Software Vulnerabilities
+   - Test for SOAP Injection
+   - Test for LDAP Injection
+   - Test for XPath Injection
+   - Test for Back-End Request Injection
+   - Test for XXE Injection
+
+9. Test for Logic Flaws
+
+   ![](DRAFT/9.jpg)
+
+   - Identify the Key Attack Surface
+   - Test Multistage Processes
+   - Test Handling of Incomplete Input
+   - Test Trust Boundaries
+   - Test Transaction Logic
+
+10. Test for Shared Hosting Vulnerabilities
+
+    ![](DRAFT/10.jpg)
+
+    - Test Segregation in Shared Infrastructures
+    - Test Segregation Between ASP-Hosted Applications
+
+11. Test for Application Server Vulnerabilities
+
+    ![](DRAFT/11.jpg)
+
+    - Test for Default Credentials
+    - Test for Default Content
+    - Test for Dangerous HTTP Methods
+    - Test for Proxy Functionality
+    - Test for Virtual Hosting Misconfiguration
+    - Test for Web Server Software Bugs
+    - Test for Web Application Firewalling
+
+12. Miscellaneous Checks
+
+    ![](DRAFT/12.jpg)
+
+    - Check for DOM-Based Attacks
+    - Check for Local Privacy Vulnerabilities
+    - Check for Weak SSL Ciphers
+    - Check Same-Origin Policy Configuration
+
+13. Follow Up Any Information Leakage
