@@ -221,7 +221,7 @@ mysql> quit
 
 7. Mở file config lên và chỉnh sửa: `sudo nano /var/www/web1/public_html/wp-config.php`
 
-```
+```php
 define('DB_NAME', 'wordpress');
 define('DB_USER', 'wordpress');
 define('DB_PASSWORD', 'wordpress');
@@ -262,7 +262,7 @@ int main(){
 
    - Chỉnh sửa file `binarySearch.py`:
 
-```
+```python
 def binary_search(nums, target):
 	left, right = 0, len(nums) - 1
 	while left <= right:
