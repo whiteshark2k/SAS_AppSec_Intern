@@ -158,25 +158,37 @@
 4. Chỉnh sửa tệp tin cấu hình cho web1
 
 	> `<VirtualHost:*80>`
+	> 
 	> 	`ServerName web1.com`
+	> 	
 	> 	`ServerAlias www.web1.com`
+	> 	
 	> 	`ServerAdmin webmaster@localhost`
+	> 	
 	> 	`DocumentRoot /var/www/web1/public_html`
+	> 	
 	> `</VirtualHost>`
 	
 5. Chỉnh sửa tệp tin cấu hình cho web2
 
    > `<VirtualHost:*80>`
+   > 
    > 	`ServerName web2.com`
+   > 	
    > 	`ServerAlias www.web2.com`
+   > 	
    > 	`ServerAdmin webmaster@localhost`
+   > 	
    > 	`DocumentRoot /var/www/web2/public_html`
+   > 	
    > `</VirtualHost>`
 
 6. Kích hoạt config của Apache Virtual Hosts
 
    > `sudo a2dissite 000-default.conf`
+   > 
    > `sudo a2ensite web1.conf`
+   > 
    > `sudo a2ensite web2.conf`
    
 7. Sử dụng file /etc/hosts để tạo hai domain web1.com và web2.com
