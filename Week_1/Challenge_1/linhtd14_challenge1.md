@@ -168,25 +168,20 @@
 	
 5. Chỉnh sửa tệp tin cấu hình cho web2
 
-   > `<VirtualHost:*80>`
-   > 
-   > 	`ServerName web2.com`
-   > 	
-   > 	`ServerAlias www.web2.com`
-   > 	
-   > 	`ServerAdmin webmaster@localhost`
-   > 	
-   > 	`DocumentRoot /var/www/web2/public_html`
-   > 	
-   > `</VirtualHost>`
+```
+<VirtualHost:*80>
+	ServerName web2.com
+	ServerAlias www.web2.com
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/web2/public_html
+</VirtualHost>
+```
 
 6. Kích hoạt config của Apache Virtual Hosts
 
-   > `sudo a2dissite 000-default.conf`
-   > 
-   > `sudo a2ensite web1.conf`
-   > 
-   > `sudo a2ensite web2.conf`
+`sudo a2dissite 000-default.conf`   
+`sudo a2ensite web1.conf`   
+`sudo a2ensite web2.conf`  
    
 7. Sử dụng file /etc/hosts để tạo hai domain web1.com và web2.com
 
@@ -211,28 +206,28 @@
 
 5. Tạo database cho Wordpress
 
-   > `sudo mysql -u root`
-   >
-   > `mysql> CREATE DATABASE wordpress;`
-   >
-   > `mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER`
-   >     `-> ON wordpress.*`
-   >     `-> TO 'wordpress'@'localhost'`
-   >     `-> IDENTIFIED BY 'wordpress';`
-   >
-   > `mysql> FLUSH PRIVILEGES;`
-   >
-   > `mysql> quit`
+```
+sudo mysql -u root
+mysql> CREATE DATABASE wordpress;
+mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER
+	-> ON wordpress.*
+	-> TO 'wordpress'@'localhost'
+	-> IDENTIFIED BY 'wordpress';
+mysql> FLUSH PRIVILEGES;
+mysql> quit
+```
 
 6. Tạo file config cho Wordpress từ sample: `sudo cp /var/www/web1/public_html/wp-config-sample.php /var/www/web1/public_html/wp-config.php`
 
 7. Mở file config lên và chỉnh sửa: `sudo nano /var/www/web1/public_html/wp-config.php`
 
-   > `define('DB_NAME', 'wordpress');`
-   > `define('DB_USER', 'wordpress');`
-   > `define('DB_PASSWORD', 'wordpress');`
-   > `define('DB_HOST', 'localhost');`
-   > `define('DB_COLLATE', 'utf8_general_ci');`
+```
+define('DB_NAME', 'wordpress');
+define('DB_USER', 'wordpress');
+define('DB_PASSWORD', 'wordpress');
+define('DB_HOST', 'localhost');
+define('DB_COLLATE', 'utf8_general_ci');
+```
 
 8. Reload Apache2: `sudo systemctl reload apache2`
 
@@ -248,12 +243,14 @@
 
    - Chỉnh sửa file `HelloWorld.c`:
 
-     > `#include<stdio.h>`
-     >
-     > `int main(){`
-     > 	`printf("Hello World");`
-     > 	`return 0;`
-     > `}`
+```C
+#include<stdio.h>
+
+int main(){
+	printf("Hello World");
+	return 0;
+}
+```
 
    - Biên dịch: `gcc -o HelloWorld HelloWorld.c`
 
@@ -265,39 +262,23 @@
 
    - Chỉnh sửa file `binarySearch.py`:
 
-     > `def binary_search(nums, target):`
-     >
-     >   `left, right = 0, len(nums) - 1` 
-     >
-     > ​    
-     >
-     >   `while left <= right:`
-     >
-     > ​    `middle = left + (right - left)//2`  
-     >
-     > ​    `if nums[middle] == target:`   
-     >
-     > ​      `return middle + 1`
-     >
-     > ​    `elif nums[middle] > target:`   
-     >
-     > ​      `right = middle - 1`
-     >
-     > ​    `else:`
-     >
-     > ​      `left = middle + 1`         
-     >
-     >   `return -1`            
-     >
-     > 
-     >
-     > `nums = list(map(int, input().split(" ")))`
-     >
-     > `target = int(input())`
-     >
-     > `nums.sort()`
-     >
-     > `print(binary_search(nums=nums,target=target))`
+```
+def binary_search(nums, target):
+	left, right = 0, len(nums) - 1
+	while left <= right:
+	middle = left + (right - left)//2
+	if nums[middle] == target:
+	return middle + 1
+	elif nums[middle] > target:
+	right = middle - 1
+	else:
+	left = middle + 1        
+	return -1           
+nums = list(map(int, input().split(" ")))
+target = int(input())
+nums.sort()
+print(binary_search(nums=nums,target=target))
+```
 
    - Biên dịch và chạy: `python3 binarySearch.py`
 
