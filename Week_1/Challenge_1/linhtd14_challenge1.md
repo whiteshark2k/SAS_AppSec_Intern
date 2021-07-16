@@ -157,17 +157,12 @@
 
 4. Chỉnh sửa tệp tin cấu hình cho web1
 
-	> `<VirtualHost:*80>`
-	> 
-	> 	`ServerName web1.com`
-	> 	
-	> 	`ServerAlias www.web1.com`
-	> 	
-	> 	`ServerAdmin webmaster@localhost`
-	> 	
-	> 	`DocumentRoot /var/www/web1/public_html`
-	> 	
-	> `</VirtualHost>`
+	> <VirtualHost:*80>  
+	> 	ServerName web1.com  
+	> 	ServerAlias www.web1.com  
+	> 	ServerAdmin webmaster@localhost  
+	> 	DocumentRoot /var/www/web1/public_html  
+	> </VirtualHost>
 	
 5. Chỉnh sửa tệp tin cấu hình cho web2
 
