@@ -206,7 +206,7 @@
 
 5. Tạo database cho Wordpress
 
-```
+```sql
 sudo mysql -u root
 mysql> CREATE DATABASE wordpress;
 mysql> GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER
