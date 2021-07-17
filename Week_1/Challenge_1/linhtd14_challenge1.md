@@ -6,47 +6,47 @@
 
 1. Cấu trúc thư mục:
 
-![](img/1.jpg)
+   - /bin - Lưu trữ các tệp tin thực thi của người dùng, có thể lưu ở dạng mã nhị phân hoặc là .sh
+   - /sbin - Lưu trữ các tệp tin thực thi của hệ thống, thường chỉ được chạy bởi root hoặc superuser
+   - /boot - Lưu trữ các tệp tin cần thiết cho quá trình khởi động máy
+   - /dev - Lưu trữ thông tin về các thiết bị ngoại vi, trong này chứa 1 folder đặc biệt là dev/null, khi chuyển một thư mục/tệp tin vào dev/null có nghĩa là nó sẽ bị xóa đi nhưng vẫn được báo là ghi thành công
+   - /etc - Lưu trữ các tệp tin cài đặt hệ thống hoặc ứng dụng
+   - /home - Thư mục của người dùng
+   - /lib - Lưu trữ các thư viện của hệ thống. Thông thường khi cài đặt các gói tin sẽ bao gồm các thư viện cài đặt thêm để hỗ trợ. Khi đó hệ thống sẽ sắp xếp các thư viện này vào cùng 1 chỗ để dễ dàng hơn khi gọi ra
+   - /lost+found - Lưu trữ các tệp tin mà fsck (filesystem check) khôi phục lại
+   - /media - Chứa các thiết bị tháo lắp
+   - /mnt - Chứa các thư mục của các ổ cứng hay trong cùng 1 mạng
+   - /opt - Chứa các tệp tin không thuộc phạm vi xử lý của package manager
+   - /proc - Chứa các thông tin về tiến trình: Các thông tin về hệ thống được biểu diễn dưới dạng file
+   - /root - Thư mục của người dùng root
+   - /srv - Chứa dữ liệu về các dịch vụ hệ thống sử dụng
+   - /sys - Chứa thông tin liên quan đến hệ thống Linux
+   - /tmp - Chứa các tệp tin tạm
+   - /usr - Chứa các công cụ và ứng dụng của người dùng
+   - /var - Chứa dữ liệu thay đổi
 
-- /bin - Lưu trữ các tệp tin thực thi của người dùng, có thể lưu ở dạng mã nhị phân hoặc là .sh
-- /sbin - Lưu trữ các tệp tin thực thi của hệ thống, thường chỉ được chạy bởi root hoặc superuser
-- /boot - Lưu trữ các tệp tin cần thiết cho quá trình khởi động máy
-- /dev - Lưu trữ thông tin về các thiết bị ngoại vi, trong này chứa 1 folder đặc biệt là dev/null, khi chuyển một thư mục/tệp tin vào dev/null có nghĩa là nó sẽ bị xóa đi nhưng vẫn được báo là ghi thành công
-- /etc - Lưu trữ các tệp tin cài đặt hệ thống hoặc ứng dụng
-- /home - Thư mục của người dùng
-- /lib - Lưu trữ các thư viện của hệ thống. Thông thường khi cài đặt các gói tin sẽ bao gồm các thư viện cài đặt thêm để hỗ trợ. Khi đó hệ thống sẽ sắp xếp các thư viện này vào cùng 1 chỗ để dễ dàng hơn khi gọi ra
-- /lost+found - Lưu trữ các tệp tin mà fsck (filesystem check) khôi phục lại
-- /media - Chứa các thiết bị tháo lắp
-- /mnt - Chứa các thư mục của các ổ cứng hay trong cùng 1 mạng
-- /opt - Chứa các tệp tin không thuộc phạm vi xử lý của package manager
-- /proc - Chứa các thông tin về tiến trình: Các thông tin về hệ thống được biểu diễn dưới dạng file
-- /root - Thư mục của người dùng root
-- /srv - Chứa dữ liệu về các dịch vụ hệ thống sử dụng
-- /sys - Chứa thông tin liên quan đến hệ thống Linux
-- /tmp - Chứa các tệp tin tạm
-- /usr - Chứa các công cụ và ứng dụng của người dùng
-- /var - Chứa dữ liệu thay đổi
+![](img/1.jpg)
 
 2. Hệ thống file trên linux
 
-- Hệ thống file Ext, Ext2, Ext3 và Ext4
-  - Ext viết tắt của **Extended File System**, được phát triển chủ yếu cho MINIX OS, Ext là phiên bản đầu tiên và không được sử dụng nữa do giới hạn của nó
-  - Ext2 cho phép quản lý 2TB dữ liệu
-  - Ext3 là phiên bản nâng cấp của Ex2. Hạn chế của Ext3 là không hỗ trợ máy chủ vì Ext3 không hỗ trợ khôi phục tệp và disk snapshot
-  - Ext4 là phiên bản mới nhất, mặc định trên các Linux Distro và là phiên bản nhanh nhất, tương thích vs SSD
-- Hệ thống file JFS
-  - JFS viết tắt của **Journaled File System**, được phát triển bởi IBM cho AIX UNIX. Đây là một hệ thống file thay thế cho Ext. Nó cũng có thể thay thế Ext4, nếu cần sự ổn định với ít tài nguyên. JFS là hệ thống file tiện dụng khi sức mạnh của CPU bị hạn chế
-- Hệ thống file ReiserFS
-  - Thay thế cho Ext3
-  - Đã cải thiện hiệu suất và các tính năng nâng cao
-  - Trước đây là hệ thống file mặc định trên SUSE Linux, nhưng sau khi thay đổi chính sách thì SUSE quay lại sử dụng Ext3
-  - Hệ thống file này hỗ trợ động phần mở rộng nhưng có một số hạn chế về hiệu suất
-- Hệ thống file XFS
-  - XFS được goi là JFS tốc độ cao, được phát triển để xử lý song song I/O. NASA vẫn đang sử dụng hệ thống file này với máy chủ lưu trữ lớn (300+ TB)
-- Hệ thống file Btrfs
-  - Btrfs viết tắt của **B tree file system**. Được sử dụng để chịu lỗi, sửa chữa hệ thống, cấu hình lưu trữ mở rộng và hơn thế nữa.
-- Hệ thống file Swap
-  - Hệ thống file Swap được sử dụng để memory paging trong Linux trong quá trình hibernation. Một hệ thống không bao giờ trong trạng thái hibernation bắt buộc phải có Swap bằng với kích thước RAM.
+   - Hệ thống file Ext, Ext2, Ext3 và Ext4
+     - Ext viết tắt của **Extended File System**, được phát triển chủ yếu cho MINIX OS, Ext là phiên bản đầu tiên và không được sử dụng nữa do giới hạn của nó
+     - Ext2 cho phép quản lý 2TB dữ liệu
+     - Ext3 là phiên bản nâng cấp của Ex2. Hạn chế của Ext3 là không hỗ trợ máy chủ vì Ext3 không hỗ trợ khôi phục tệp và disk snapshot
+     - Ext4 là phiên bản mới nhất, mặc định trên các Linux Distro và là phiên bản nhanh nhất, tương thích vs SSD
+   - Hệ thống file JFS
+     - JFS viết tắt của **Journaled File System**, được phát triển bởi IBM cho AIX UNIX. Đây là một hệ thống file thay thế cho Ext. Nó cũng có thể thay thế Ext4, nếu cần sự ổn định với ít tài nguyên. JFS là hệ thống file tiện dụng khi sức mạnh của CPU bị hạn chế
+   - Hệ thống file ReiserFS
+     - Thay thế cho Ext3
+     - Đã cải thiện hiệu suất và các tính năng nâng cao
+     - Trước đây là hệ thống file mặc định trên SUSE Linux, nhưng sau khi thay đổi chính sách thì SUSE quay lại sử dụng Ext3
+     - Hệ thống file này hỗ trợ động phần mở rộng nhưng có một số hạn chế về hiệu suất
+   - Hệ thống file XFS
+     - XFS được goi là JFS tốc độ cao, được phát triển để xử lý song song I/O. NASA vẫn đang sử dụng hệ thống file này với máy chủ lưu trữ lớn (300+ TB)
+   - Hệ thống file Btrfs
+     - Btrfs viết tắt của **B tree file system**. Được sử dụng để chịu lỗi, sửa chữa hệ thống, cấu hình lưu trữ mở rộng và hơn thế nữa.
+   - Hệ thống file Swap
+     - Hệ thống file Swap được sử dụng để memory paging trong Linux trong quá trình hibernation. Một hệ thống không bao giờ trong trạng thái hibernation bắt buộc phải có Swap bằng với kích thước RAM.
 
 ### 1.2. Cài đặt Ubuntu
 
@@ -165,7 +165,7 @@
 	DocumentRoot /var/www/web1/public_html  
 </VirtualHost>
 ```
-	
+
 5. Chỉnh sửa tệp tin cấu hình cho web2
 
 ```
@@ -178,11 +178,10 @@
 ```
 
 6. Kích hoạt config của Apache Virtual Hosts
+   - `sudo a2dissite 000-default.conf` 
+   - `sudo a2ensite web1.conf`
+   - `sudo a2ensite web2.conf`
 
-`sudo a2dissite 000-default.conf`   
-`sudo a2ensite web1.conf`   
-`sudo a2ensite web2.conf`  
-   
 7. Sử dụng file /etc/hosts để tạo hai domain web1.com và web2.com
 
    - `sudo nano /etc/hosts`
@@ -218,7 +217,6 @@ mysql> quit
 ```
 
 6. Tạo file config cho Wordpress từ sample: `sudo cp /var/www/web1/public_html/wp-config-sample.php /var/www/web1/public_html/wp-config.php`
-
 7. Mở file config lên và chỉnh sửa: `sudo nano /var/www/web1/public_html/wp-config.php`
 
 ```php
@@ -253,7 +251,6 @@ int main(){
 ```
 
    - Biên dịch: `gcc -o HelloWorld HelloWorld.c`
-
    - Chạy file HelloWord: `./HelloWorld`
 
 2. Lập trình tìm kiếm nhị phân trên python
