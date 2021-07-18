@@ -103,7 +103,7 @@
   - Tạo mới 3 user: UserA và UserB thuộc GroupX, UserC thuộc GroupY
     - UserA và UserB thuộc GroupX: `sudo useradd -m -g GroupX UserA` và `sudo useradd -m -g GroupX UserB`
     - UserC thuộc GroupY: `sudo useradd -m -g GroupY UserC`
-  - Phân quyền file F1 chỉ cho phép thực thi bởi UserA/GroupX: 
+  - á: 
     - 1.1. Chuyển chủ sở hữu F1 thành UserA: `sudo chown UserA F1`
     - 1.2. Chỉ cho phép UserA thực thi F1: `sudo chmod u+x F1`
     - 2.1. Chuyển chủ sở hữu F1 thành GroupX: `sudo chown :GroupX F1`
@@ -123,7 +123,241 @@
 
 ### 3.1. Lấy thông tin hệ thống (2đ)
 
+- Source code
+
+```shell
+  #!/bin/bash
+
+  echo "[Thong tin he thong]"
+  echo "Ten may: `hostname`"
+  #echo "Ten ban phan phoi: `head -1 /etc/issue | cut -d '\' -f 1`"
+  echo "Ten ban phan phoi: `egrep '^(NAME)=' /etc/os-release | cut -d '"' -f 2`"
+  echo "Phien ban he dieu hanh: `egrep '^(VERSION)=' /etc/os-release | cut -d '"' -f 2`"
+  echo 
+  echo "[Thong tin CPU]"
+  echo "Ten: `egrep -m1 '^model name' /proc/cpuinfo | cut -d ":" -f 2 `"
+  echo "Toc do: `egrep -m1 '^cpu MHz' /proc/cpuinfo | cut -d ":" -f 2 ` MHz"
+  echo "Kien truc: `uname -m`"
+  echo 
+  echo "[Dung luong trong tren o dia]"
+  echo "`df -t ext4 -h --output=source,avail`"
+  echo
+  echo "[Thong tin mang]"
+  echo "`ifconfig | grep 'inet'`"
+  echo
+  echo "[Danh sach user]"
+  echo "`cut -d : -f 1 /etc/passwd | sort`"
+  echo
+  echo "[Cac tien trinh dang chay voi quyen root]"
+  echo "`ps -U root -u root -o comm= | sort`"
+  echo
+  echo "[Cac port dang mo]"
+  echo "`netstat -tuwanp4 2>/dev/null | awk '{print $4}' | grep ':' | cut -d ":" -f 2 | sort -n | uniq`"
+  echo 
+  echo "[Danh sach cac thu muc tren he thong cho phep other co quyen ghi]"
+  echo "`sudo find / -type d -perm /o=w`"
+  echo
+  echo "[Danh sach cac goi phan mem duoc cai dat tren he thon]"
+  echo "`dpkg -l | awk '{printf("%-50s %-10s\n",$2,$3);};'`"
+```
+
 ### 3.2. Xử lý file (2đ)
+
+- Source code
+
+  ```shell
+  #!/bin/bash
+  
+  runForTheFirstTime(){
+  	list_old_file=$1
+  	list_current_file=$2
+  	dir=$3
+  	
+  	if [ ! -e $list_old_file ]
+  	then
+  		find $dir -type f > $list_old_file
+  	fi
+  	
+  	if [ ! -e $list_current_file ]
+  	then
+  		touch $list_current_file
+  	fi
+  }
+  
+  checkForNewFile(){
+  	list_old_file=$1
+  	list_current_file=$2
+  	
+  	while read -r line
+  	do
+  		exist=$(grep -w $line -m 1 $list_old_file)
+  		if [ ! $exist ]
+  		then
+  			fileType=$(file -i "$line" | cut -d ' ' -f 2)
+  			if [ "$fileType" == "text/plain;" ]
+  			then
+  				echo -e "\n$line\n" >> /var/log/checketc.log
+  				head -n 10 "$line" >> /var/log/checketc.log
+  			else
+  				echo -e "\n$line\n" >> /var/log/checketc.log
+  			fi	
+  		fi
+  	done < $list_current_file	
+  }
+  
+  checkForDeletedFile(){
+  	list_old_file=$1
+  	list_current_file=$2
+  	
+  	while read -r line
+  	do
+  		exist=$(grep -w $line -m 1 $list_current_file)
+  		if [ ! $exist ]
+  		then
+  			echo -e "$line\n" >> /var/log/checketc.log
+  		fi
+  	done < $list_old_file	
+  }
+  
+  # Init
+  dir='/etc'
+  list_old_file='/home/linhtd99/list_old_file'
+  list_current_file='/home/linhtd99/list_current_file'
+  
+  # Create lists and write list file to list_current_file
+  runForTheFirstTime $list_old_file $list_current_file $dir
+  find $dir -type f > $list_current_file
+  
+  # Time
+  echo -e "[Log checketc - `date +%T` `date +%D`] \n" >> /var/log/checketc.log
+  
+  # New file
+  echo -e "=== Danh sach file tao moi ===" >> /var/log/checketc.log
+  checkForNewFile $list_old_file $list_current_file
+  
+  # Modified File
+  echo -e "\n=== Danh sach file sua doi ===\n" >> /var/log/checketc.log
+  modifiedFile=`sudo find /etc -mmin -30`
+  echo $modifiedFile |sed 's/ /\n/g' >> /var/log/checketc.log
+  echo >> /var/log/checketc.log
+  
+  # Deleted File
+  echo -e "\n=== Danh sach file bi xoa === \n" >> /var/log/checketc.log
+  checkForDeletedFile $list_old_file $list_current_file
+  
+  # Write list_current_file to list_old_file
+  cat $list_current_file > $list_old_file
+  
+  cat /var/log/checketc.log | mail -s "checketc.log" "root@localhost"
+  ```
+
+- Để thực hiện mỗi 30 phút sử dụng: `crontab -e`, thêm vào dòng /30 * * * * `sudo ./checketc.h`
+
+- Output
+
+  ```
+  [Log checketc - 21:52:07 07/17/21] 
+  
+  === Danh sach file tao moi ===
+  
+  /etc/systemd/system/snap-gtk-common-themes-1514.mount
+  
+  [Unit]
+  Description=Mount unit for gtk-common-themes, revision 1514
+  Before=snapd.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/gtk-common-themes_1514.snap
+  Where=/snap/gtk-common-themes/1514
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide
+  LazyUnmount=yes
+  
+  /etc/systemd/system/snap-gtk-common-themes-1515.mount
+  
+  [Unit]
+  Description=Mount unit for gtk-common-themes, revision 1515
+  Before=snapd.service
+  After=zfs-mount.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/gtk-common-themes_1515.snap
+  Where=/snap/gtk-common-themes/1515
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide,x-gvfs-hide
+  
+  /etc/systemd/system/snap-gnome-3-34-1804-66.mount
+  
+  [Unit]
+  Description=Mount unit for gnome-3-34-1804, revision 66
+  Before=snapd.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/gnome-3-34-1804_66.snap
+  Where=/snap/gnome-3-34-1804/66
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide
+  LazyUnmount=yes
+  
+  /etc/systemd/system/snap-gnome-3-34-1804-72.mount
+  
+  [Unit]
+  Description=Mount unit for gnome-3-34-1804, revision 72
+  Before=snapd.service
+  After=zfs-mount.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/gnome-3-34-1804_72.snap
+  Where=/snap/gnome-3-34-1804/72
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide,x-gvfs-hide
+  
+  /etc/systemd/system/snap-snap-store-547.mount
+  
+  [Unit]
+  Description=Mount unit for snap-store, revision 547
+  Before=snapd.service
+  After=zfs-mount.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/snap-store_547.snap
+  Where=/snap/snap-store/547
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide,x-gvfs-hide
+  
+  /etc/systemd/system/snap-snap-store-518.mount
+  
+  [Unit]
+  Description=Mount unit for snap-store, revision 518
+  Before=snapd.service
+  
+  [Mount]
+  What=/var/lib/snapd/snaps/snap-store_518.snap
+  Where=/snap/snap-store/518
+  Type=squashfs
+  Options=nodev,ro,x-gdu.hide
+  LazyUnmount=yes
+  
+  === Danh sach file sua doi ===
+  
+  
+  
+  
+  === Danh sach file bi xoa === 
+  
+  /etc/systemd/system/snap-gtk-common-themes-1514.mount
+  
+  /etc/systemd/system/snap-gtk-common-themes-1515.mount
+  
+  /etc/systemd/system/snap-gnome-3-34-1804-66.mount
+  
+  /etc/systemd/system/snap-gnome-3-34-1804-72.mount
+  
+  /etc/systemd/system/snap-snap-store-547.mount
+  
+  /etc/systemd/system/snap-snap-store-518.mount
+  
+  ```
 
 ### 3.3. Monitor SSH (2đ)
 
