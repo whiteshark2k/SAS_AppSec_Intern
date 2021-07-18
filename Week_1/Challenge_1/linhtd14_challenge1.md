@@ -103,7 +103,7 @@
   - Tạo mới 3 user: UserA và UserB thuộc GroupX, UserC thuộc GroupY
     - UserA và UserB thuộc GroupX: `sudo useradd -m -g GroupX UserA` và `sudo useradd -m -g GroupX UserB`
     - UserC thuộc GroupY: `sudo useradd -m -g GroupY UserC`
-  - á: 
+  - Phân quyền file F1 chỉ cho phép thực thi bởi UserA/GroupX
     - 1.1. Chuyển chủ sở hữu F1 thành UserA: `sudo chown UserA F1`
     - 1.2. Chỉ cho phép UserA thực thi F1: `sudo chmod u+x F1`
     - 2.1. Chuyển chủ sở hữu F1 thành GroupX: `sudo chown :GroupX F1`
@@ -251,7 +251,7 @@
   cat /var/log/checketc.log | mail -s "checketc.log" "root@localhost"
   ```
 
-- Để thực hiện mỗi 30 phút sử dụng: `crontab -e`, thêm vào dòng /30 * * * * `sudo ./checketc.h`
+- Để thực hiện mỗi 30 phút sử dụng: `crontab -e`, thêm vào dòng `/30 * * * * sudo ./checketc.h`
 
 - Output
 
