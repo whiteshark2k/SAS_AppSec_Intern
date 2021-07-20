@@ -99,10 +99,10 @@
      
      int main(){
          int euid = geteuid();
-     	string command = "id " + to_string(euid);
+         string command = "id " + to_string(euid);
          system(command.c_str());
      	
-     	// Dung de pause chuong trinh
+         //Dung de pause chuong trinh
          cin.get();
          return 0;
      }
