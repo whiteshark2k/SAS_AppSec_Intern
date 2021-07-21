@@ -79,8 +79,8 @@
    - Output:
 
      ```bash
-     linhtd99@ubuntu:~/Desktop/C2$ ./mypasswd 
-     Nhap ten user: test
+     alice@ubuntu:~/Desktop/C2$ ./mypasswd 
+     Nhap ten user: bob
      Nhap password: BrUt3_f0rC3_m3
      New password: Retype new password: passwd: password updated successfully
      ```
@@ -110,7 +110,7 @@
 
    - Compile: `g++ -o myid myid.cpp`
 
-   - Thay đổi owner thành **test**: `sudo chown test.test myid`
+   - Thay đổi owner thành **bob**: `sudo chown bob.bob myid`
 
    - Cấp quyền **setuid**: `sudo chmod u+s myid`
 
@@ -119,17 +119,17 @@
    - Output
 
      ```bash
-     linhtd99@ubuntu:~/Desktop/C2$ ./myid
-     uid=1001(test) gid=1001(test) groups=1001(test)
+     alice@ubuntu:~/Desktop/C2$ ./myid
+     uid=1001(bob) gid=1001(bob) groups=1001(bob)
      ```
 
      ```bash
-     linhtd99@ubuntu:~/Desktop/C2$ ls -la
-     -rwsrwxr-x 1 test     test     19928 Jul 19 22:39 myid
-     -rw-rw-r-- 1 linhtd99 linhtd99   231 Jul 19 22:39 myid.cpp
+     alice@ubuntu:~/Desktop/C2$ ls -la
+     -rwsrwxr-x 1 bob      bob      19928 Jul 19 22:39 myid
+     -rw-rw-r-- 1 alice    alice      231 Jul 19 22:39 myid.cpp
      
-     linhtd99@ubuntu:~/Desktop/C2$ ps -aux | grep "./myid"
-     test        5122  0.0  0.0   6108  3112 pts/0    S+   22:40   0:00 ./myid
+     alice@ubuntu:~/Desktop/C2$ ps -aux | grep "./myid"
+     bob        5122  0.0  0.0   6108  3112 pts/0    S+   22:40   0:00 ./myid
      ```
 
      
