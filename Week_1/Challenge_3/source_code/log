@@ -1,0 +1,13 @@
+linhtd99@ubuntu:~/Desktop/C3$ ./sshd_logger.sh 
+[pid  2949] 20:31:42 write(5, "\0\0\0\1\0\0\0 \3028\250QL\352\301}\371\253\30\261De\306\0\246\fG\275\3\365\321+"..., 67 <unfinished ...>
+[pid  2949] 20:31:42 write(5, "\0\0\0\t\10", 5) = 5
+[pid  2949] 20:31:42 write(5, "\0\0\0\4test", 8 <unfinished ...>
+[pid  2949] 20:31:42 write(5, "\0\0\0\1d", 5) = 5
+[pid  2949] 20:31:42 write(5, "\0\0\0\33\4", 5 <unfinished ...>
+[pid  2949] 20:31:42 write(5, "\0\0\0\16ssh-connection\0\0\0\0\0\0\0\0", 26 <unfinished ...>
+[pid  2949] 20:31:46 write(5, "\0\0\0\23\f", 5) = 5
+[pid  2949] 20:31:46 write(5, "\0\0\0\16BrUt3_f0rC3_m3", 18 <unfinished ...>
+[pid  2948] 20:31:46 read(6, "\f\0\0\0\16BrUt3_f0rC3_m3", 19) = 19
+[pid  2949] 20:31:46 write(5, "\0\0\0\1f", 5) = 5
+[pid  3116] 20:31:48 write(5, "\0\0\0\1\34", 5) = 5
+[pid  3117] 20:31:48 openat(AT_FDCWD, "/home/test/.profile", O_RDONLY) = 3

