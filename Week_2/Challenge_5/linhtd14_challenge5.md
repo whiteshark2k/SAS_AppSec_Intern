@@ -2,6 +2,20 @@
 
 ## 1. Đăng nhập
 
+- Tài khoản giáo viên:
+
+  ```
+  Username: LinhTD
+  Password: admin
+  ```
+
+- Tài khoản sinh viên:
+
+  ```
+  Username: NhatLQ
+  Password: test
+  ```
+
 ![](img/dang_nhap.jpg)
 
 ## 2. Giáo viên
