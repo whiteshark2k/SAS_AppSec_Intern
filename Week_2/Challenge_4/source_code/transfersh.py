@@ -29,7 +29,7 @@ def download_file(link, s):
             #print(data)
             res += data
         
-        body = res.split(b"\r\n\r\n")[1]
+        body = res.split(b"\r\n\r\n", 1)[1]
         #print(body)
         f = open(filename, 'wb')
         f.write(body)

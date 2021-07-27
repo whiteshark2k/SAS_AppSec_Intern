@@ -248,7 +248,7 @@ def download_file(link, s):
             #print(data)
             res += data
         
-        body = res.split(b"\r\n\r\n")[1]
+        body = res.split(b"\r\n\r\n", 1)[1]
         #print(body)
         f = open(filename, 'wb')
         f.write(body)
@@ -258,7 +258,7 @@ def download_file(link, s):
     except Exception:
             print("Link co the khong dung!")
             
-       
+           
 def main():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ipaddr = socket.gethostbyname('transfer.sh')
@@ -274,6 +274,7 @@ def main():
         upload_file(filename, s)
     elif choice == '2':
         link = input("Nhap link can download: ")
+        #link = "http://transfer.sh/1FmSNIW/test.pdf"
         download_file(link.strip(" ").strip("\n"),s)
 
 main()
